@@ -24,6 +24,6 @@ const TaskSchema = mongoose.Schema({
     endDate: {
         type: Date,
         default: null
-    }
+    },
     
 })
