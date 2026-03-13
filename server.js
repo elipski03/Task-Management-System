@@ -6,7 +6,8 @@ const path = require('path');
 
 require('dotenv').config();
 
-const { login, register } = require('./controllers/authController');
+const authRouter = require('./routes/authRoute');
+const authApiRouter = require('./routes/authApiRoute');
 
 const PORT_NUMBER = process.env.PORT;
 const mongoURI = process.env.mongoURI;
@@ -15,17 +16,9 @@ app.use(express.urlencoded({ extended: true }));
 
 /* ---------------------------------- Endpoints ----------------------------------- */
 
-app.get('/register', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'register.html'));
-});
+app.use('/auth/api', authApiRouter);
 
-app.post('/register', register);
-
-app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'login.html'));
-});
-
-app.post('/login', login);
+app.use('/auth', authRouter);
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
