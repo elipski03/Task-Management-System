@@ -10,10 +10,12 @@ require('./auth/passport');
 const authRouter = require('./routes/authRoute');
 const authApiRouter = require('./routes/authApiRoute');
 
-const PORT_NUMBER = process.env.PORT;
+const PORT_B = process.env.PORT_B;
+const PORT_F = process.env.PORT_F;
 const mongoURI = process.env.mongoURI;
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 /* ---------------------------------- Endpoints ----------------------------------- */
 
@@ -21,9 +23,6 @@ app.use('/auth/api', authApiRouter);
 
 app.use('/auth', authRouter);
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'index.html'));
-});
 
 /* ----------------------------------- Connect ------------------------------------ */
 
@@ -35,6 +34,6 @@ const connect = async (url) => {
 
 connect(mongoURI);
 
-app.listen(PORT_NUMBER, () => {
-  console.log(`Server running on http://localhost:${PORT_NUMBER}`);
+app.listen(PORT_B, () => {
+  console.log(`Server running on http://localhost:${PORT_B}`);
 });
