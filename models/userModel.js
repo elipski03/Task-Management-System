@@ -8,12 +8,17 @@ const UserSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
     },
-    userName: {
+    name: {
         type: String,
-        required: true,
     },
+    googleId: {
+        type: String,
+    },
+    authType: {
+        type: String,
+    },
+    
     creationDate: {
         type: Date,
         default: Date.now,
@@ -24,6 +29,11 @@ const UserSchema = mongoose.Schema({
             ref: 'User',
         },
     ],
+});
+
+UserSchema.pre('save', async function () {
+  if (this.password && this.isModified('password'))
+    this.password = await bcrypt.hash(this.password, SALT_ROUNDS);
 });
 
 module.exports = mongoose.model('User', UserSchema);

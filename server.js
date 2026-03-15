@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 
 require('dotenv').config();
+require('./auth/passport');
 
 const authRouter = require('./routes/authRoute');
 const authApiRouter = require('./routes/authApiRoute');
