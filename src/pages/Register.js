@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function RegisterForm() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) navigate('/dashboard');
+  });
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -32,11 +39,12 @@ export default function RegisterForm() {
 
   return (
     <div className="container my-5">
-      <div className="mb-3">
+      {/* Back button in top-left */}
+      {/* <div className="mb-3">
         <a href="/" className="btn btn-outline-secondary">
           ← Back to Dashboard
         </a>
-      </div>
+      </div> */}
 
       <div className="row justify-content-center">
         <div className="col-md-6 col-lg-4">
@@ -100,7 +108,7 @@ export default function RegisterForm() {
               </form>
               <p className="mt-3 mb-0 text-center">
                 Already have an account?{' '}
-                <a href="/login" className="text-decoration-none">
+                <a href="/" className="text-decoration-none">
                   Login here
                 </a>
               </p>

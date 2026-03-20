@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Login() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (localStorage.getItem('token')) navigate('/dashboard');
+  });
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -16,25 +23,27 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch('/auth/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    });
-
-    if (response.ok) {
-      alert('Login successful!');
-    } else {
-      alert('Login failed.');
+    try {
+      const res = await axios.post('/auth/api/login', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      localStorage.setItem('token', res.data.token);
+      alert('Login Succesful!');
+      navigate('/dashboard');
+    } catch (error) {
+      alert('Login Failed!');
     }
   };
 
   return (
     <div className="container my-5">
+      {/* Back button in top-left */}
       <div className="mb-3">
-        <a href="/" className="btn btn-outline-secondary">
+        {/* <a href="/dashboard" className="btn btn-outline-secondary">
           ← Back to Dashboard
-        </a>
+        </a> */}
       </div>
 
       <div className="row justify-content-center">
@@ -75,6 +84,11 @@ export default function Login() {
                     value={formData.password}
                     onChange={handleChange}
                   />
+                  <p className="mt-2 mb-0">
+                    <a href="/forgot-password" className="text-decoration-none">
+                      Forgot your password?
+                    </a>
+                  </p>
                 </div>
 
                 <button type="submit" className="btn btn-primary w-100">
@@ -82,15 +96,19 @@ export default function Login() {
                 </button>
               </form>
 
+              <hr />
+
+              <a
+                href="http://localhost:3001/auth/google"
+                className="btn btn-outline-dark w-100"
+              >
+                Continue with Google
+              </a>
+
               <p className="mt-3 mb-0 text-center">
                 Don’t have an account?{' '}
                 <a href="/register" className="text-decoration-none">
                   Register here
-                </a>
-              </p>
-              <p className="mt-2 mb-0 text-center">
-                <a href="/forgot-password" className="text-decoration-none">
-                  Forgot your password?
                 </a>
               </p>
             </div>
