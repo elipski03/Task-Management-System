@@ -19,9 +19,10 @@ router.get(
   (req, res) => {
     const user = req.user;
     console.log(`User ${user._id} logged in successfully`);
-    res.status(200).json({ token: user._jwtToken, userId: user._id });
+    res.redirect(
+      `http://localhost:${process.env.PORT_F}/auth/success?token=${user._jwtToken}`
+    );
   }
 );
-
 
 module.exports = router;
